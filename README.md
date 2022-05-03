@@ -89,5 +89,37 @@ All goals went to the _home_ team and it looks like it was a rough match for the
 We can also see that Player9 attemped to score three times and two of his attempted resulted in goals. 
 
 ## Which team had the ball longest?
+
+The following cypher command is used to retrieve the start and end time for all events separated into which team they belong to:
+
+```cypher
+MATCH (t:Team {name: 'Home'})<-[]-(:Player)-[:CAUSED]->(e:Event)
+RETURN t.name AS Team, e.startTime AS startTime, e.endTime 
+AS endTime
+UNION
+MATCH (t:Team {name: 'Away'})<-[]-(:Player)-[:CAUSED]->(e:Event)
+RETURN t.name AS Team, e.startTime AS startTime, e.endTime 
+AS endTime
+```
+
+We used python to calculate which team had possession of the ball the most. (See [./script.py](./script.py) for full implementation)
+
+`event diff time` is the sum of all events from start to end time value. <br/>
+`held time` is the sum of time between each event, its assummed that the team for the last event is the one in possession of the ball.
+
+Output:
+```
+Home event diff time: 0:14:34.560000
+Home held time: 0:35:14.640000
+Home total possession time: 0:49:49.200000
+
+Away event diff time: 0:12:48.760000
+Away held time: 0:33:07.200000
+Home total possession time: 0:45:55.960000
+
+Total seconds: 5745.16
+Match time: 1:35:45.160000
+```
+
 ## Is there any close ‘societies’ between players? (passing the ball to each other)
 ## How close is the connection between two specific players?
