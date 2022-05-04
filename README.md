@@ -1,12 +1,15 @@
 # DB-Neo4JAssignment
 
 ## Run
+Start neo4j database instance in docker:
 ```
 $ docker compose up
 ```
+Connect to the database with Neo4j Desktop and open either Neo4j Browser to run cypher commands or Neo4j Bloom to visualize the graph.
+
 
 ### Import Data
-Creates each node and relationship between them
+Creates each node and relationship between them by importing _Sample Game 1_ with the `LOAD CSV` command
 ```cypher
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/metrica-sports/sample-data/master/data/Sample_Game_1/Sample_Game_1_RawEventsData.csv' AS row
 MERGE (tea:Team {name: row.Team})
@@ -163,6 +166,3 @@ RETURN p, p2, e
 ```
 
 This graph will also show players that have only received the ball from another player.
-
-## How close is the connection between two specific players?
-
