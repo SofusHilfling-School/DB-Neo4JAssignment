@@ -35,7 +35,7 @@ MERGE (se:SubEvent {name: subtype})
 MERGE (evn)-[:IS_ALSO]->(se)
 ```
 
-_NOTE: Because of the way the csv data is structed, the current graph model shows both WON and LOSS  as Subtype nodes of a single CHALLENGE node. This _
+_NOTE: Because of the way the csv data is structed, the current graph model shows both WON and LOSS  as Subtype nodes of a single CHALLENGE node._
 
 # Graph Model
 ![Picture of graph model](asserts/graph_model.png)
@@ -121,5 +121,48 @@ Total seconds: 5745.16
 Match time: 1:35:45.160000
 ```
 
-## Is there any close ‘societies’ between players? (passing the ball to each other)
+## Is there any closed ‘societies’ between players? (passing the ball to each other)
+We use this cypher query to retrieve a list with number of passes between two players.
+
+```cypher
+MATCH (p:Player)-[:CAUSED]->(e:Event)-[:RECIVES]->(p2:Player), 
+    (p2:Player)-[:CAUSED]->(e2:Event)-[:RECIVES]->(p:Player)
+WITH p, p2, collect(e)+collect(e2) AS list
+UNWIND list AS events
+WITH DISTINCT p, p2, events
+RETURN p.name AS player_1, p2.name AS player_2, count(events) AS pass_count
+ORDER BY pass_count DESC
+```
+
+Output:
+
+![Passes between players](asserts/most_passess_between_player_pair.png)
+
+The query doesn’t return any data that can be used to show a graph, but we can change the return line to return p, p2, and events instead and thereby get the graph. Although, that wouldn’t make sense as we can get the same result by just using the following query:
+
+```cypher
+MATCH (p:Player)-[:CAUSED]->(e:Event)-[:RECIVES]->(p2:Player), 
+    (p2:Player)-[:CAUSED]->(e2:Event)-[:RECIVES]->(p:Player)
+RETURN *
+```
+
+If we just look at the whole graph over all passes between all players, it can be hard to extract any useful information besides some players making more passes than other:
+
+![All passess between all players](asserts/passess_between_all_players.png)
+
+If we go a little further and look at _Player2_ which have the most plays with _Player7_. We can see that _Player2_ mostly plays with _Player7_ and _Player3_.
+
+![Player2 societies](asserts/all_player2_societies.png)
+
+### Only shows players that have played the ball back and fought
+The queries above are only meant to show players that have played the ball back and fought between each other. If we wanted to see all passes, we would use the query below:
+
+```cypher
+MATCH (p:Player)--(e:Event)--(p2:Player)
+RETURN p, p2, e
+```
+
+This graph will also show players that have only received the ball from another player.
+
 ## How close is the connection between two specific players?
+
