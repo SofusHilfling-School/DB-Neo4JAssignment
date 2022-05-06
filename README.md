@@ -8,8 +8,8 @@ $ docker compose up
 Connect to the database with Neo4j Desktop and open either Neo4j Browser to run cypher commands or Neo4j Bloom to visualize the graph.
 
 
-### Import Data
-Creates each node and relationship between them by importing _Sample Game 1_ with the `LOAD CSV` command
+## Import Data
+By importing _Sample Game 1_ and using the `LOAD CSV` command, create each node and relationship between them.
 ```cypher
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/metrica-sports/sample-data/master/data/Sample_Game_1/Sample_Game_1_RawEventsData.csv' AS row
 MERGE (tea:Team {name: row.Team})
@@ -61,18 +61,18 @@ ORDER BY recive_count DESC
 
 ![Most passes](asserts/5_most_passes.png) ![Most recives](asserts/5_most_recives.png)
 
-If we look at the four players with most recives we get the graph below. 
+If we look at the four players with most receives, we get the graph below. 
 The top cluster is the _home_ team, and the bottom is the _away_ team.
 
-We can see the passes from each player is prette even, with the exception of one player on the away team that never pass or recived the ball to either of the two players.
+We can see, that the passes from each player is pretty even, with the exception of one player on the away team that never passes to or received the ball to either of the two players.
 
 ![Most recive](asserts/two_most_recives_each_team.png)
 
-The four players with most passes gives us a little diffrent picture. As before, the top team is the _home_ team and the bottom is the _away_ team.
+The four players with most passes gives us a bit of a different picture. As before, the top team is the _home_ team and the bottom is the _away_ team.
 
 ![Most passes](asserts/most_passses.png)
 
-In termes of passes, the home team seemes to be the best in that regard, and we go down the list to find the player on the _away_ team with second most passes its Player16 at place number 8 in the list.
+In termes of passes, the home team seemes to be the best in that regard, and we go down the list to find the player on the _away_ team with second most passes; Player16 at place number 8 in the list.
 
 The home team just seem to have more passes between each other compared to the away team.
 
@@ -89,7 +89,7 @@ By including the players and their team we get a better understanding of how the
 The attempts were performed by a total of 7 players, three of which plays on the _away_ team and other four on the _home_ team.
 
 All goals went to the _home_ team and it looks like it was a rough match for the _away_ team since they only made three attempts in total.
-We can also see that Player9 attemped to score three times and two of his attempted resulted in goals. 
+We can also see that Player9 attempted to score three times, and two of his attempts resulted in goals. 
 
 ## Which team had the ball longest?
 
